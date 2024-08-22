@@ -1,23 +1,24 @@
 # reppp
 
 import pandas as pd
+import pyarrow.parquet as pq
 
-def top_15_most_frequent(file_path, column_name):
-    # Wczytanie danych z pliku CSV
-    df = pd.read_csv(file_path)
-    
-    # Zliczanie wystąpień wartości w wybranej kolumnie
-    value_counts = df[column_name].value_counts()
-    
-    # Wybieranie 15 najczęściej powtarzających się wartości
-    top_15 = value_counts.head(15)
-    
-    return top_15
+# Lista plików Parquet, które chcesz sprawdzić
+files = [
+    'admin_oper_23_24.parquet',
+    'client_oper.parquet',
+    'history_client_oper_23_24.parquet'
+]
 
-# Ścieżka do pliku CSV i nazwa kolumny
-file_path = 'path_to_your_file.csv'
-column_name = 'your_column_name'
+# Funkcja do wyświetlenia nagłówków tabel
+def show_columns(file_path):
+    # Wczytaj plik Parquet do DataFrame
+    df = pd.read_parquet(file_path)
+    # Wyświetl kolumny
+    print(f"Columns in {file_path}:")
+    print(df.columns.tolist())
+    print()
 
-# Wywołanie funkcji i wyświetlenie wyników
-top_15_values = top_15_most_frequent(file_path, column_name)
-print(top_15_values)
+# Przejdź przez każdy plik i wyświetl jego nagłówki
+for file in files:
+    show_columns(file)
